@@ -46,4 +46,3 @@ def pre_save_job_receciver(sender, instance, *args, **kwargs):
         instance.slug = slugify(instance.user.username + "-" + instance.jobTitle)
         
 pre_save.connect(pre_save_job_receciver, sender=Job)
-
