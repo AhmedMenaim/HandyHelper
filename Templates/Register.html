@@ -1,0 +1,45 @@
+{% block content %}
+
+{% load static %}
+
+
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Register.css' %}"/>
+  </head>
+  
+  <form method="post">  {% csrf_token %} 
+   
+    <div class="container">
+      <h1> Welcome! Register to manage your jobs!</h1>
+
+      <h2>Register</h2>
+      <p>Please fill in this form to create an account.</p>
+      <hr>
+  
+      {% for field in registeration_form %}
+          <p>
+            {{field.label}}: {{field}}
+            {% if field.help_text %}
+              <small> {{field.help_text}} </small>
+            {% endif %}
+
+            {% for error in field.errors %}
+              <p class="error"> {{error}} </p>
+            {% endfor %}
+          </p>
+
+
+      {% endfor %}
+      <hr>
+  
+      <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+      <button type="submit" class="registerbtn">Register</button>
+    </div>
+  
+    <div class="container signin">
+      <p>Already have an account? <a href="Login">Login</a>.</p>
+    </div>
+  </form>
+
+  {% endblock content %}

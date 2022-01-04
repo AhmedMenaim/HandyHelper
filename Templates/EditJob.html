@@ -1,0 +1,89 @@
+{% block content %}
+
+{% load static %}
+
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/EditJob.css' %}"/>
+</head>
+
+
+
+
+{% if request.user.is_authenticated %}
+    <div class="ButtonsContainer">
+        <p>
+            <p><a href="{% url 'Dashboard' %}"> Dashboard </a> &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;   <a href="{% url 'Logout' %}">Logout</a></p>
+        </p>
+    </div>
+    <h1> Hello {{request.user.username}}! Create a job!</h1>
+    <hr>
+    
+    <div class="container">
+        {% if Success_Message %} 
+          <h3 style= "color:green; text-align: center;"> {{Success_Message}}</h3>
+        {% endif %}
+        <form class="form" method="post"> {% csrf_token %} 
+
+            <div class="form-group">
+                <label for="id_title"> Title: </label>
+                <input class="form" type="text" name="jobTitle" id="id_title" placeholder="Job Title" value="{{form.initial.jobTitle}}" minlength="3" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="id_location"> Location: </label>
+                <input class="form" type="text" name="jobLocation" id="id_location" placeholder="Job Location" value="{{form.initial.jobLocation}}" minlength="3" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="id_describtion"> Describtion: </label>
+                <textarea class="form" type="text" name="jobDescribtion" id="id_describtion" placeholder="Describe your job..." minlength="3" required autofocus> {{form.initial.jobDescribtion}} </textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="id_categories"> Category: </label><br>
+                    <!-- {% for category in form.initial.jobCategory.all %} 
+                        <input class="EditJob_form" type="checkbox" name="jobCategory" id="jobCategory" value="{{category.id}}" checked> <label for="category.name"> {{category.name}}</label><br>
+                    {% endfor %} -->
+
+                    {% for newCategory in form.jobCategory.field.queryset %}
+                        <!-- <input class="EditJob_form" type="checkbox" name="jobCategory" id="jobCategory" value="{{newCategory.id}}"> <label for="newCategory.name"> {{newCategory.name}}</label><br> -->
+                            {% if newCategory in form.initial.jobCategory.all %}
+                                <input class="EditJob_form" type="checkbox" name="jobCategory" id="jobCategory" value="{{newCategory.id}}" checked> <label for="newCategory.name"> {{newCategory.name}}</label><br>
+                            {% else %} 
+                        
+                                <input class="EditJob_form" type="checkbox" name="jobCategory" id="jobCategory" value="{{newCategory.id}}"> <label for="newCategory.name"> {{newCategory.name}}</label><br>
+                            {% endif %}
+                    {% endfor %}
+                     
+                
+            </div>
+            {% for field in form %}
+             <p>
+                {% for error in field.errors %}
+                    <p style="color: red;"> {{error}} </p>
+                {% endfor %}
+             </p>
+            {% endfor %}
+            {% if form.non_field_errors %}
+              <div>
+                <p class="error"> {{ form.non_field_errors }}</p>
+              </div>
+            {% endif %} 
+  
+  
+            
+
+            <ul>
+            <!-- <a class="Cancel" href="{% url 'Dashboard' %}" > <button type="cancel" class="Cancel">Cancel</button> </a> -->
+            <!-- <a class="Submit" href="{% url 'Dashboard' %}" > <button type="submit" class="Submit">Submit</button> </a> -->
+             <button type="cancel" class="Cancel">Cancel</button>
+             <button type="submit" class="Submit">Submit</button>
+            </ul>
+
+        </form>
+    </div>
+
+
+{% endif %}
+
+{% endblock content %}

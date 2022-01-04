@@ -1,0 +1,94 @@
+{% load static %}
+
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/Dashboard.css' %}"/>
+</head>
+
+
+{% block content %}
+
+    {% if request.user.is_authenticated %}
+      <div class="ButtonsContainer">
+        <p>
+          <a href="{% url 'Logout' %}"> Logout </a> &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; <a href="{% url 'Job:AddJob' %}" > <button type="button" class="NewJob">New job!</button> </a>
+        </p>
+
+      </div>
+      {% if Added_Message %} 
+          <h3 style= "color:green; text-align: center;"> {{Added_Message}}</h3>
+      {% endif %}
+       <h1> Hello {{request.user.username}}!</h1>
+
+       <h2> All Jobs: </h2>
+        <table>      
+          <tr>
+              <th>Job</th>
+              <th>Location</th>
+              <th> Actions</th>
+              
+          </tr>
+
+
+            {% for job in jobs %}
+                {% if job.user == request.user and job.isAdded == False %}
+                  <tr><td>{{ job.jobTitle }} </td> <td>{{ job.jobLocation }}</td> <td> <p> <a href="{% url 'Job:ViewJob' job.slug %}">View</a> | <a href="{% url 'Job:RemoveJob' job.slug %}">Remove</a> | <a href="{% url 'Job:EditJob' job.slug %}">Edit</a> | <a href="{% url 'Job:AddToMyJobs' job.slug %}">Add</a></p></td><br></tr>
+                {% elif job.user != request.user and job.isAdded == False %}
+                  <tr><td>{{ job.jobTitle }} </td> <td>{{ job.jobLocation }}</td> <td> <p> <a href="{% url 'Job:ViewJob' job.slug %}">View</a> | <a href="{% url 'Job:AddToMyJobs' job.slug %}">Add</a> </p></td></tr>
+                {% endif %}
+
+            {% endfor %}
+        </table>
+
+      <h2> {{request.user.username}}'s Jobs: </h2>
+      <table>      
+        <tr>
+            <th>Job</th>
+            <th>Location</th>
+            <th> Actions</th>
+            
+        </tr>
+
+
+          {% for job in jobs %}
+            {% if job.user == request.user %}
+              {% if job.isAdded %}
+                <tr><td>{{ job.jobTitle }} </td> <td>{{ job.jobLocation }}</td> <td> <p> <a href="{% url 'Job:ViewJob' job.slug %}">View</a> | <a href="{% url 'Job:RemoveJob' job.slug %}">Done</a> | <a href="{% url 'Job:GiveUpJob' job.slug %}">Giveup</a> </p></td><br></tr>                
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+      </table>
+
+
+    {% else %}
+      <h1> Welcome! </h1>
+        <table>
+              
+            <tr>
+              <th>Job</th>
+              <th>Location</th>
+              <th> Actions</th>
+                    
+            </tr>
+
+          {% for job in jobs %}
+
+            {% if job.isAdded %}
+              <tr><td>{{ job.jobTitle }} </td> <td>{{ job.jobLocation }}</td> <td> <p> <a href="{% url 'Register' %}">Register</a> | <a href="{% url 'Login' %}">Login</a></p></td></tr>
+            {% else %}
+              <tr><td>{{ job.jobTitle }} </td> <td>{{ job.jobLocation }}</td> <td> <p> <a href="{% url 'Register' %}">Register</a> | <a href="{% url 'Login' %}">Login</a> </p></td></tr>
+            {% endif %}
+          {% endfor %} 
+    
+                
+     
+        </table>
+
+            
+
+    {% endif %}
+
+
+  
+  {% endblock content %}
+
+

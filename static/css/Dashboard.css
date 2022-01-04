@@ -1,0 +1,43 @@
+
+.ButtonsContainer {
+    text-align: right;
+    font-size: 30px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #fffbfb;
+    border: 1px solid #dddddd;
+  }
+
+  .NewJob {
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 15%;
+    border-radius: 15px;
+    opacity: 0.9;
+  }
+  
+  .NewJob:hover {
+    opacity:1;
+  }
+
+  .ButtonsContainer {
+    text-align: right;
+    font-size: 20px;
+    }

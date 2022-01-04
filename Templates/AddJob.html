@@ -1,0 +1,73 @@
+{% block content %}
+
+{% load static %}
+
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/AddJob.css' %}"/>
+</head>
+
+
+
+
+{% if request.user.is_authenticated %}
+    <div class="ButtonsContainer">
+        <p>
+            <p><a href="{% url 'Dashboard' %}"> Dashboard </a> &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;   <a href="{% url 'Logout' %}">Logout</a></p>
+        </p>
+
+    </div>
+    <h1> Hello {{request.user.username}}! Create a job!</h1>
+    <hr>
+    
+    <div class="container">
+        {% if Success_Message %}
+        <h3 style= "color:green; text-align: center;"> {{Success_Message}}</h3>
+        <p style="color:green; text-align: center;"> Continue Adding or go to <a href="{% url 'Dashboard' %}"> Dashboard </a> </p>
+        {% endif %}
+        <form class="AddJob_form" method="post"> {% csrf_token %} 
+
+            <div class="form-group">
+                <label for="id_title"> Title: </label>
+                <input class="AddJob_form" type="text" name="jobTitle" id="id_title" placeholder="Job Title" minlength="3" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="id_location"> Location: </label>
+                <input class="AddJob_form" type="text" name="jobLocation" id="id_location" placeholder="Job Location" minlength="3" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="id_describtion"> Describtion: </label>
+                <textarea class="AddJob_form" type="text" name="jobDescribtion" id="id_describtion" placeholder="Describe your job..." minlength="3" required autofocus></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="id_categories"> Category: </label><br>
+                {% for category in AddJob_form.jobCategory.field.queryset %} 
+                    <input class="AddJob_form" type="checkbox" name="jobCategory" id="jobCategory" value="{{category.name}}"> <label for="category.name"> {{category.name}}</label><br>
+                {% endfor %}
+                
+            </div>
+            {% for field in AddJob_form %}
+             <p>
+                {% for error in field.errors %}
+                <p style="color: red;"> {{error}} </p>
+                {% endfor %}
+             </p>
+  
+  
+            {% endfor %}
+            <ul>
+             <!-- <a class="Cancel" href="{% url 'Dashboard' %}" > <button type="cancel" class="Cancel">Cancel</button> </a> -->
+            <!-- <a class="Submit" href="{% url 'Dashboard' %}" > <button type="submit" class="Submit">Submit</button> </a> -->
+             <button type="cancel" class="Cancel">Cancel</button>
+             <button type="submit" class="Submit">Submit</button>
+            </ul>
+
+        </form>
+    </div>
+
+
+{% endif %}
+
+{% endblock content %}
